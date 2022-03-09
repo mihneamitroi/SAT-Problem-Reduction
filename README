@@ -1,0 +1,139 @@
+Mitroi Mihnea-Cristian - 321CA
+
+    1. Retele
+    Consideram N numarul de noduri din graf, M numarul de muchii din graf si K
+    dimensiunea grupului de noduri cautat.
+
+    Cerinta reprezinta de fapt problema clicii, in care se cauta un subgraf de
+    marime K complet (intre oricare doua noduri exista o muchie). Aceasta
+    problema se poate reduce la o problema de tip CNF-SAT codificand
+    urmatoarele restrictii in clauze:
+    - fiecare pozitie a grupului cautat are un element posibil (nod)
+    - fiecare nod apare pe cel mult o pozitie
+    - daca oricare 2 noduri nu au muchie intre ele, nu pot exista ambele in
+    clica. Dupa formularea cererii catre oracol se preiau numerele pozitive si
+    se printeaza tinandu-se cont ca fiecare nod apare de K ori in rezultat.
+
+    Descriere complexitate si numar de clauze
+
+    Numarul de clauze generat:
+    K + K * K * (N * (N - 1) / 2 - M) + (K * (K - 1)) / 2 * N
+
+    -termenul K:
+    K pozitii, iar fiecare pozitie este verificata printr-o o linie cu N
+    noduri.
+
+    -termenul K * K * (N * (N - 1) / 2 - M):
+    N * (N - 1) / 2 este numarul de muchii pe care l-ar putea contine graful
+    daca ar fi complet. M este numarul de muchii existente, deci 
+    (N * (N - 1) / 2 - M) este numarul de perechi de noduri ce nu au muchie
+    intre ele. Fiecare dintre cele doua poate fi pus pe K pozitii, de unde 
+    rezulta K * K posibilitati. Inmultind numarul de perechi de noduri cu modul
+    in care pot fi dispuse obtinem termenul.
+
+    - termenul (K * (K - 1)) / 2 * N
+    N este numarul de noduri si se verifica fiecare nod. K * (K - 1) / 2 reprezinta
+    numarul de combinatii in care pot fi luate cate 2 pozitii dintr-un grup de
+    K noduri. Prima oara se alege un nod din cele K care se pune in pereche cu 
+    celelalte K - 1 noduri. Apoi se alege alt nod cu cele K - 2 noduri ramase,
+    pentru ca cu primul a fost deja verificat la primul pas. Insumand rezultatele
+    se obtine o suma gaussiana egala cu K * (K - 1) / 2.
+    
+    Complexitate:
+    K * N + N^2 * K + N * K^2 => O(N^2 * K)
+
+    2. Reclame
+    Consideram N numarul de noduri din graf si M numarul de muchii din graf.
+	
+    Cerinta reprezinta de fapt complementul problemei setului maximal independent de noduri
+    dintr-un graf (gasirea unui numar maxim de noduri intre care nu exista muchii).
+    Consideram initial ca gasim un set independent de un singur nod, eliminandu-le pe toate
+    celalte. Apoi marim acest grup, incercand sa eliminam cat mai putine noduri si a obtine
+    un numar maxim de noduri independente. Astfel, K este initial N - 1, care scade pana cu
+    un pas inainte ca oracolul sa returneze false.
+    Dupa ce gasim aceste noduri, trebuie sa le eliminam pe celelalte care nu au fost gasite
+    deoarece vom avea garantia ca cele ramase nu vor avea muchii intre ele, deci vor fi
+    izolate. Aceasta problema se poate reduce la o problema de tip CNF-SAT codificand 
+    urmatoarele restrictii in clauze:
+    - fiecare pozitie a grupului cautat are un element posibil (nod)
+    - fiecare nod apare pe cel mult o pozitie
+    - pe fiecare pozitie este pus cel mult un nod
+    - daca oricare 2 noduri au muchie intre ele, nu pot exista ambele in set
+    Dupa formularea cererii catre oracol se preiau numerele pozitive si se printeaza
+    celelalte noduri, tinandu-se cont ca fiecare nod apare de K ori in rezultat.
+
+    Descriere complexitate si numar de clauze
+
+    Particularitatea acestui task este ca oracolul se apeleaza de mai multe ori
+    pana se ajunge la solutia optima, astfel ca numarul de rulari este comparabil
+    cu K.
+
+    Numarul de clauze generat la fiecare pas:
+    K + (K * (K - 1)) / 2 * N + K * K * M + K * N * (N - 1) / 2
+
+    -termenul K:
+    K pozitii, iar fiecare pozitie este verificata printr-o o linie cu N noduri.
+
+    - termenul (K * (K - 1)) / 2 * N
+    N este numarul de noduri si se verifica fiecare nod. K * (K - 1) / 2 reprezinta
+    numarul de combinatii in care pot fi luate cate 2 pozitii dintr-un grup de K noduri.
+    Prima oara se alege un nod din cele K care se pune in pereche cu celelalte K - 1
+    noduri. Apoi se alege alt nod cu cele K - 2 noduri ramase, pentru ca cu primul a
+    fost deja verificat la primul pas. Insumand rezultatele se obtine o suma gaussiana
+    egala cu K * (K - 1) / 2.
+
+    - termenul K * N * (N - 1) / 2
+    K este numarul de pozitii si se verifica fiecare pozitie. N * (N - 1) / 2 reprezinta
+    numarul de combinatii in care pot fi luate cate 2 noduri dintr-un grup de N noduri.
+    Prima oara se alege un nod din cele N care se pune in pereche cu celelalte N - 1
+    noduri. Apoi se alege alt nod cu cele N - 2 noduri ramase, pentru ca cu primul a
+    fost deja verificat la primul pas. Insumand rezultatele se obtine o suma gaussiana
+    egala cu N * (N - 1) / 2.
+
+    - termenul K * K * M
+    M este numarul de muchii existente si se verifica fiecare pereche de noduri adiacente
+    muchiei. Fiecare dintre cele doua noduri ale pechechii poate fi pus pe K pozitii, 
+    de unde rezulta K * K posibilitati.
+
+    Complexitate:
+    (K * N + N^2 * K^2 + N^2 * K + N * K^2) * K => O(N^2 * K^3)
+
+    3. Registre
+    Consideram N numarul de variabile, M numarul de dintre ele si K
+    numarul de registre in care se pot pune variabilele.
+
+    Cerinta reprezinta de fapt o problema de K-colorare, fiecare variabila reprezentand
+    un nod, fiecare relatie reprezentand o muchie si fiecare registru o culoare. Dorind
+    sa vedem daca putem stoca variabilele in registre, vrem de fapt sa vedem daca putem
+    colora nodurile fara sa avem doua noduri adiacente cu aceeasi culoare.
+    Aceasta problema se poate reduce la o problema de tip CNF-SAT codificand urmatoarele 
+    restrictii in clauze:
+    - fiecare variabila / nod are atribuit un registru / culoare.
+    - pentru fiecare variabila / nod este atribuit cel mult un registru / culoare.
+    - daca oricare 2 variabile / noduri au relatie / muchie intre ele, nu pot fi stocate
+    in acelasi registru / nu pot avea aceeasi culoare.
+    Dupa formularea cererii catre oracol se preiau variabilele / nodurile si se printeza
+    registrul / culoarea atribuita.
+
+    Descriere complexitate si numar de clauze
+
+    Numarul de clauze generat:
+    N + K * (K - 1) / 2 * N + K * M;
+
+    -termenul N:
+    N noduri, fiecare nod trebuie sa aiba valoarea 1 in cel putin un registru.
+
+    - termenul (K * (K - 1)) / 2 * N
+    N este numarul de noduri si se verifica fiecare nod. K * (K - 1) / 2 reprezinta
+    numarul de combinatii in care pot fi luate cate 2 pozitii dintr-un grup de K noduri.
+    Prima oara se alege un nod din cele K care se pune in pereche cu celelalte K - 1
+    noduri. Apoi se alege alt nod cu cele K - 2 noduri ramase, pentru ca cu primul a
+    fost deja verificat la primul pas. Insumand rezultatele se obtine o suma gaussiana
+    egala cu K * (K - 1) / 2.
+
+    - termenul K * M
+    M este numarul de muchii existente si se verifica fiecare pereche de noduri adiacente
+    muchiei.
+
+    Complexitate:
+    K * N + N * K^2 + N^2 * K => O(N^2 * K)
